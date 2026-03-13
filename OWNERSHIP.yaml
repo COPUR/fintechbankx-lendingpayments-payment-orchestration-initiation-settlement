@@ -1,0 +1,7 @@
+bounded_context: "payments"
+service_id: "svc-pay-initiation-settlement"
+application_id: "app.pay.initiation-settlement"
+data_owner_pattern: "db_pay_initiation_settlement_prod"
+event_namespace: "evt.pay.payment"
+owning_squad: "Payment Orchestration Squad"
+wave: "3"
