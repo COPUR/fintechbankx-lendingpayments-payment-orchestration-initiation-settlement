@@ -1,0 +1,86 @@
+apply plugin: 'jacoco'
+
+description = 'Payment Infrastructure Layer - Persistence and external integrations'
+
+dependencies {
+    // Payment layers
+    implementation project(':payment-context:payment-domain')
+    implementation project(':payment-context:payment-application')
+    
+    // Shared components
+    implementation project(':shared-kernel')
+    implementation project(':shared-infrastructure')
+
+    // Lombok
+    compileOnly "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
+    
+    // Spring Boot dependencies
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    
+    // API Documentation
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+    
+    // HATEOAS for REST API
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+    
+    // Database
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'org.postgresql:postgresql'
+    
+    // Test dependencies
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.flywaydb:flyway-core'
+    testImplementation 'org.flywaydb:flyway-database-postgresql'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:postgresql'
+}
+
+jacoco {
+    toolVersion = "0.8.14"
+}
+
+def paymentInfrastructureCoverageIncludes = [
+    'com/bank/payment/infrastructure/external/**',
+    'com/bank/payment/infrastructure/persistence/InMemoryPaymentRepositoryAdapter*',
+    'com/bank/payment/infrastructure/persistence/JpaPaymentRepositoryAdapter*',
+    'com/bank/payment/infrastructure/web/PaymentController*'
+]
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect { dir ->
+            fileTree(dir: dir, include: paymentInfrastructureCoverageIncludes)
+        }))
+    }
+}
+
+jacocoTestCoverageVerification {
+    dependsOn jacocoTestReport
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect { dir ->
+            fileTree(dir: dir, include: paymentInfrastructureCoverageIncludes)
+        }))
+    }
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.85
+            }
+        }
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification
