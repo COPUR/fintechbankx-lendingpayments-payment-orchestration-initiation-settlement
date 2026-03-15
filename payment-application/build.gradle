@@ -4,7 +4,7 @@ description = 'Payment Application Layer - Use cases and application services'
 
 dependencies {
     // Payment domain layer
-    implementation project(':payment-context:payment-domain')
+    implementation project(':payment-domain')
     
     // Shared components
     implementation project(':shared-kernel')
