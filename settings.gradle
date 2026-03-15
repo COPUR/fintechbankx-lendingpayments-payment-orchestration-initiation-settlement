@@ -1,0 +1,6 @@
+rootProject.name = 'fintechbankx-payments-initiation-settlement-service'
+
+include 'shared-kernel'
+include 'payment-domain'
+include 'payment-application'
+include 'payment-infrastructure'

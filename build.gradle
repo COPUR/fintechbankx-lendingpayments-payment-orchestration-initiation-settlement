@@ -1,19 +1,28 @@
-// =================================================================
-// PAYMENT CONTEXT - PARENT MODULE
-// =================================================================
-// Payment Processing Bounded Context
-// Manages payments, settlements, and related workflows
-// =================================================================
-
 plugins {
     id 'java-library'
+    id 'io.spring.dependency-management' version '1.1.7' apply false
 }
 
 description = 'Payment Processing Context - Enterprise Banking System'
 
+allprojects {
+    group = 'com.fintechbankx'
+    version = '1.0.0'
+
+    repositories {
+        mavenCentral()
+    }
+}
+
 subprojects {
     apply plugin: 'java-library'
     apply plugin: 'io.spring.dependency-management'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(23)
+        }
+    }
 
     dependencyManagement {
         imports {
@@ -22,31 +31,10 @@ subprojects {
     }
 
     dependencies {
-        // Shared Foundation
-        api project(':shared-kernel')
-        api project(':shared-infrastructure')
-
-        // Lombok
-        compileOnly "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
-        annotationProcessor "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
-        testCompileOnly "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
-        testAnnotationProcessor "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
-
-        // Testing
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
-        testImplementation 'org.junit.jupiter:junit-jupiter'
-        testImplementation 'org.assertj:assertj-core'
-        testImplementation 'org.mockito:mockito-core'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     }
 
-    afterEvaluate {
-        jar {
-            enabled = true
-            archiveClassifier = ''
-        }
+    tasks.withType(Test).configureEach {
+        useJUnitPlatform()
     }
-}
-
-dependencies {
-    // This parent module aggregates the submodules
 }
