@@ -726,7 +726,7 @@ curl -X POST https://api.bank.com/api/v1/payments \
     "paymentMethod": {
       "type": "ACH",
       "routingNumber": "021000021",
-      "accountToken": "tok_1234567890"
+      "accountToken": "masked_account_token"
     },
     "merchantInfo": {
       "name": "ACME Corp",
