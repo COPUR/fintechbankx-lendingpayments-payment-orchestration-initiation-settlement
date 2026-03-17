@@ -1,0 +1,12 @@
+@startuml
+skinparam componentStyle rectangle
+package "Payments Initiation & Settlement Service" {
+  [Payments API Adapter] as API
+  [Payment Orchestrator] as APP
+  [Payment Domain] as DOMAIN
+  [Settlement Adapter] as SETTLE
+  API --> APP
+  APP --> DOMAIN
+  APP --> SETTLE
+}
+@enduml

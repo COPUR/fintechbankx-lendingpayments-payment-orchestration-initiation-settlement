@@ -6,9 +6,9 @@ The Payment Context implements **real-time payment processing** with **PCI-DSS v
 
 ## 🏗️ Architecture Diagram
 
-![Payment Context Architecture](../docs/images/payment-context-architecture.svg)
+![Payment Context Architecture](docs/images/payment-context-architecture.svg)
 
-**PlantUML Source**: [payment-context-architecture.puml](../docs/puml/bounded-contexts/payment-context-architecture.puml)
+**PlantUML Source**: [payment-context-architecture.puml](docs/puml/bounded-contexts/payment-context-architecture.puml)
 
 ## 🎯 Domain Responsibilities
 
@@ -756,3 +756,8 @@ eventSource.addEventListener('payment-update', (event) => {
 **Version**: 1.0  
 **Security Level**: PCI-DSS v4.0 Compliant  
 **Architecture**: Real-time Event-Driven + Hexagonal**
+
+## Publication Guardrails
+
+- Follow [Publication Guardrails](docs/publication/PUBLICATION_GUARDRAILS.md).
+- Do not commit local paths, personal identifiers, or secrets.
